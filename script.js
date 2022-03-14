@@ -6,7 +6,7 @@ canvas.height = 500;
 
 let score = 0;
 let gameFrame = 0;
-ctx.font = '50px Georgia';
+ctx.font = '60px Brush Script MT';
 
 //Mouse Interactivity
 let canvasPosition = canvas.getBoundingClientRect();
@@ -24,7 +24,10 @@ canvas.addEventListener('mouseup', function(){
     mouse.click = false;
 })
 //Player
-
+const playerLeft = new Image();
+playerLeft.src = 'fish_swim_left.png';
+const playerRight = new Image();
+playerRight.src = 'fish_swim_right.png';
 class Player {
     constructor(){
         this.x = canvas.width;
@@ -39,7 +42,6 @@ class Player {
     }
     update(){
         const dx = this.x - mouse.x;
-        console.log(canvas.width, mouse.x)
         const dy = this.y - mouse.y;
         if(mouse.x != this.x){
             this.x -= dx/20;
@@ -61,8 +63,11 @@ class Player {
         ctx.fill();
         ctx.closePath();
         ctx.fillRect(this.x,this.y,this.radius,10);
-
-        
+        if (this.x >= mouse.x){
+          ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x-60, this.y-45, this.spriteWidth/4, this.spriteHeight/4)
+        } else {
+          ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x-60, this.y-45, this.spriteWidth/4, this.spriteHeight/4)
+        }
     }
 
 }
