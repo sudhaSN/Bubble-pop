@@ -6,7 +6,7 @@ canvas.height = 500;
 
 let score = 0;
 let gameFrame = 0;
-ctx.font = '60px Brush Script MT';
+ctx.font = '50px Brush Script MT';
 
 //Mouse Interactivity
 let canvasPosition = canvas.getBoundingClientRect();
@@ -33,7 +33,7 @@ class Player {
         this.x = canvas.width;
         this.y = canvas.height/2;
         this.radius = 50;
-        this.angle = 0;
+        this.angle = 20;
         this.frameX = 0;
         this.frameY = 0;
         this.frame = 0;
@@ -43,6 +43,8 @@ class Player {
     update(){
         const dx = this.x - mouse.x;
         const dy = this.y - mouse.y;
+        let theta = Math.atan2(dy, dx);
+        this.angle = theta;
         if(mouse.x != this.x){
             this.x -= dx/20;
         }
@@ -63,11 +65,16 @@ class Player {
         ctx.fill();
         ctx.closePath();
         ctx.fillRect(this.x,this.y,this.radius,10);
+
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
         if (this.x >= mouse.x){
-          ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x-60, this.y-45, this.spriteWidth/4, this.spriteHeight/4)
+          ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0-60, 0-45, this.spriteWidth/4, this.spriteHeight/4)
         } else {
-          ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x-60, this.y-45, this.spriteWidth/4, this.spriteHeight/4)
+          ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, 0-60, 0-45, this.spriteWidth/4, this.spriteHeight/4)
         }
+        ctx.restore()
     }
 
 }
@@ -146,3 +153,7 @@ function animate(){
     requestAnimationFrame(animate);
 }
 animate();
+
+window.addEventListener('resize', function(){
+     canvasPosition = canvas.getBoundingClientRect();
+});
